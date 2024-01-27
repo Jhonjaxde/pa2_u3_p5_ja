@@ -1,5 +1,7 @@
 package com.uce.edu.ventas.repository;
 
+import java.util.List;
+
 import com.uce.edu.ventas.repository.modelo.Factura;
 
 public interface IFacturaRepository {
@@ -9,4 +11,9 @@ public interface IFacturaRepository {
 	public void eliminar(Integer id);
 	
 	public Factura seleccionarPorNumero(String numero);
+	
+	public List<Factura> seleccionarInnerJoin();
+	public List<Factura> seleccionarRightJoin();
+	public List<Factura> seleccionarLeftJoin();
+	public List<Factura> seleccionarFullJoin();
 }

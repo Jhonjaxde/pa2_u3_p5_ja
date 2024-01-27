@@ -1,5 +1,7 @@
 package com.uce.edu.ventas.service;
 
+import java.util.List;
+
 import com.uce.edu.ventas.repository.modelo.Factura;
 
 public interface IFacturaService {
@@ -9,4 +11,8 @@ public interface IFacturaService {
 	public void borrar(Integer id);
 	
 	public Factura buscarPorNumero(String numero);
+	public List<Factura> buscarFacturaInnerJoin();
+	public List<Factura> buscarFacturaRightJoin();
+	public List<Factura> buscarFacturaLeftJoin();
+	public List<Factura> buscarFacturaFullJoin();
 }

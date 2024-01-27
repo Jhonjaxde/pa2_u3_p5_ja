@@ -29,7 +29,7 @@ public class Factura {
 	@Column(name = "fact_cedula")
 	private String cedula;
 
-	@OneToMany(mappedBy = "factura",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "factura",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<DetalleFactura> detalles;
 
 	// SET AND GET
