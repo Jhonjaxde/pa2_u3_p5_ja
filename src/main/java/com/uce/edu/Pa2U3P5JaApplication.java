@@ -11,12 +11,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.uce.edu.ventas.repository.modelo.DetalleFactura;
 import com.uce.edu.ventas.repository.modelo.Factura;
+import com.uce.edu.ventas.repository.modelo.Habitacion;
+import com.uce.edu.ventas.repository.modelo.Hotel;
 import com.uce.edu.ventas.service.IFacturaService;
+import com.uce.edu.ventas.service.IHabitacionService;
+import com.uce.edu.ventas.service.IHotelService;
 
 @SpringBootApplication
 public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Autowired
 	private IFacturaService facturaService;
+	@Autowired
+	private IHotelService hotelService;
+	@Autowired
+	private IHabitacionService habitacionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P5JaApplication.class, args);
@@ -24,66 +32,46 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		Factura fac = new Factura();
-//		fac.setNumero("0001-04343");
-//		fac.setFecha(LocalDateTime.now());
-//		fac.setCedula("1720312348");
-//
-//		DetalleFactura de1 = new DetalleFactura();
-//		de1.setCantidad(43);
-//		de1.setCodigobarras("JH55M24");
-//		de1.setNombreProducto("GALLETA AMOR");
-//
-//		DetalleFactura de2 = new DetalleFactura();
-//		de2.setCantidad(23);
-//		de2.setCodigobarras("LL23T33");
-//		de2.setNombreProducto("CERVEZA");
-//		
-//		DetalleFactura de3 = new DetalleFactura();
-//		de3.setCantidad(20);
-//		de3.setCodigobarras("LL23Y13");
-//		de3.setNombreProducto("COMIDA PARA PERRO");
-//
-//		List<DetalleFactura> lista = new ArrayList<>();
-//		lista.add(de1);
-//		lista.add(de2);
-//		lista.add(de3);
-//		fac.setDetalles(lista);
-//		de1.setFactura(fac);
-//		de2.setFactura(fac);
-//		de3.setFactura(fac);
-//		this.facturaService.guardar(fac);
-//
-//		for (DetalleFactura detalleFactura : fac.getDetalles()) {
-//			System.out.println(detalleFactura);
-//		}
-//		System.out.println(this.facturaService.buscarPorNumero("0001-02323"));
-		System.out.println("INNER JOIN");
-		List<Factura> reporte = this.facturaService.buscarFacturaInnerJoin();
-		for (Factura factura : reporte) {
-			System.out.println(factura);
-		}
-		System.out.println("RIGHT JOIN");
-		List<Factura> reporte1 = this.facturaService.buscarFacturaRightJoin();
-		for (Factura factura : reporte1) {
-			System.out.println(factura.getNumero());
-		}
+
+		Hotel ho = new Hotel();
+		ho.setNombre("El Vergel Norte");
+		ho.setDireccion("Calle El Vergel, y, Quito");
 		
-		System.out.println("LEFT JOIN");
-		List<Factura> reporte2 = this.facturaService.buscarFacturaLeftJoin();
-		for (Factura factura : reporte2) {
-			System.out.println(factura.getNumero());
-		}
+		Habitacion ha1 = new Habitacion();
+		ha1.setClase("premium");
+		ha1.setNumero("22");
+		Habitacion ha2 = new Habitacion();
+		ha2.setClase("premium");
+		ha2.setNumero("33");
+		Habitacion ha3 = new Habitacion();
+		ha3.setClase("estandar");
+		ha3.setNumero("01");
+		//Relaciones
 		
+		List<Habitacion> listaHa = new ArrayList<>();
+		listaHa.add(ha1);
+		listaHa.add(ha2);
+		//listaHa.add(ha3);
+		ho.setHabitaciones(listaHa);
+		ha1.setHotel(ho);
+		ha2.setHotel(ho);
+		//ha3.setHotel(ho);
+		
+		//this.hotelService.guardar(ho);
 		System.out.println("FULL JOIN");
-		List<Factura> reporte3 = this.facturaService.buscarFacturaFullJoin();
-		for (Factura f : reporte3) {
-			System.out.println(f);
-			for(DetalleFactura d :f.getDetalles()) {
-				System.out.println(d);
+		List<Hotel> reporte = this.hotelService.buscarHabitacionesPorNombreYClase("33","premium");
+		for (Hotel hotel : reporte) {
+			System.out.println(hotel.getNombre());
+			for (Habitacion habitacion : hotel.getHabitaciones()) {
+				System.out.println(habitacion);
 			}
+			
 		}
 		
-	}
+		
+		
+		
+		
+		}
 
 }
