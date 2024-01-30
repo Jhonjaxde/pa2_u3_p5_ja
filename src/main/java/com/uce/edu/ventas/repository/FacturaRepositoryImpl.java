@@ -4,12 +4,18 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.uce.edu.ventas.repository.modelo.Factura;
 
+import com.uce.edu.ventas.repository.modelo.DetalleFactura;
+import com.uce.edu.ventas.repository.modelo.Factura;
+import com.uce.edu.ventas.repository.modelo.Hotel;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 @Transactional
@@ -67,9 +73,9 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 		= this.entityManager.createQuery
 		("SELECT f FROM Factura f JOIN f.detalles d",Factura.class);
 		List<Factura> lista = myQuery.getResultList();
-		for (Factura factura : lista) {
-			factura.getDetalles().size();
-		}
+//		for (Factura factura : lista) {
+//			factura.getDetalles().size();
+//		}
 		
 		return lista;
 	}
@@ -109,6 +115,51 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 		for (Factura factura : lista) {
 			factura.getDetalles().size();
 		}
+		
+		return lista;
+	}
+
+	@Override
+	public List<Factura> seleccionarFactura(String numero) {
+		CriteriaBuilder myCriteria=this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Factura> myCriteriaQuery=myCriteria.createQuery(Factura.class);
+		
+		Root<Factura> myFrom=myCriteriaQuery.from(Factura.class);//from ciudadano
+		myFrom.join("detalleFactura");
+		Predicate condicionApellido=myCriteria.equal(myFrom.get("apellido"), numero); //condicion
+		//construir el sql final
+		myCriteriaQuery.select(myFrom).where(condicionApellido);
+		//Ejecutamos la consulta con un typedQuery
+		TypedQuery<Factura> myTypedQuery=this.entityManager.createQuery(myCriteriaQuery);
+		
+		return myTypedQuery.getResultList();
+	}
+
+	@Override
+	public List<Factura> seleccionarFacturaWhereJoin() {
+		TypedQuery<Factura> myQuery = 
+				this.entityManager.createQuery
+				("SELECT f FROM Factura f, DetalleFactura d WHERE f= d.factura",
+				Factura.class);
+		List<Factura> lista = myQuery.getResultList();
+		for (Factura factura : lista) {
+			factura.getDetalles().size();
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public List<Factura> seleccionarFacturaFetchJoin() {
+		// el fetch va a la derecha del join 
+		TypedQuery<Factura> myQuery = 
+				this.entityManager.createQuery
+				("SELECT f FROM Factura f JOIN FETCH f.detalles d",
+				Factura.class);
+		List<Factura> lista = myQuery.getResultList();
+//		for (Factura factura : lista) {
+//			factura.getDetalles().size();
+//		}
 		
 		return lista;
 	}

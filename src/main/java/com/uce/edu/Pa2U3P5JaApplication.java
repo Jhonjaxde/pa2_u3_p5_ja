@@ -33,45 +33,35 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Hotel ho = new Hotel();
-		ho.setNombre("El Vergel Norte");
-		ho.setDireccion("Calle El Vergel, y, Quito");
-		
-		Habitacion ha1 = new Habitacion();
-		ha1.setClase("premium");
-		ha1.setNumero("22");
-		Habitacion ha2 = new Habitacion();
-		ha2.setClase("premium");
-		ha2.setNumero("33");
-		Habitacion ha3 = new Habitacion();
-		ha3.setClase("estandar");
-		ha3.setNumero("01");
-		//Relaciones
-		
-		List<Habitacion> listaHa = new ArrayList<>();
-		listaHa.add(ha1);
-		listaHa.add(ha2);
-		//listaHa.add(ha3);
-		ho.setHabitaciones(listaHa);
-		ha1.setHotel(ho);
-		ha2.setHotel(ho);
-		//ha3.setHotel(ho);
-		
-		//this.hotelService.guardar(ho);
-		System.out.println("FULL JOIN");
-		List<Hotel> reporte = this.hotelService.buscarHabitacionesPorNombreYClase("33","premium");
-		for (Hotel hotel : reporte) {
-			System.out.println(hotel.getNombre());
-			for (Habitacion habitacion : hotel.getHabitaciones()) {
-				System.out.println(habitacion);
+		System.out.println("INNER JOIN");
+		List<Factura> reporte1 = this.facturaService.buscarFacturaInnerJoin();
+		for (Factura f : reporte1) {
+			System.out.println(f.getNumero());
+//			for (DetalleFactura defa : f.getDetalles()) {
+//				System.out.println(defa.getNombreProducto());
+//			}
+
+		}
+
+		System.out.println("WHERE JOIN");
+		List<Factura> reporte = this.facturaService.buscarFacturaWhereJoin();
+		for (Factura f : reporte) {
+			System.out.println(f.getNumero());
+			for (DetalleFactura defa : f.getDetalles()) {
+				System.out.println(defa.getNombreProducto());
 			}
-			
+
 		}
-		
-		
-		
-		
-		
+		System.out.println("FETCH JOIN");
+		List<Factura> reporte2 = this.facturaService.buscarFacturaFetchJoin();
+		for (Factura f : reporte2) {
+			System.out.println(f.getNumero());
+			for (DetalleFactura defa : f.getDetalles()) {
+				System.out.println(defa.getNombreProducto());
+			}
+
 		}
+
+	}
 
 }
