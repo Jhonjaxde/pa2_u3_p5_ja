@@ -1,5 +1,6 @@
 package com.uce.edu.ventas.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Repository;
 import com.uce.edu.ventas.repository.modelo.DetalleFactura;
 import com.uce.edu.ventas.repository.modelo.Factura;
 import com.uce.edu.ventas.repository.modelo.Hotel;
+import com.uce.edu.ventas.repository.modelo.dto.FacturaDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -162,6 +165,38 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 //		}
 		
 		return lista;
+	}
+
+	@Override
+	public int actualizarFechas(LocalDateTime fechaNueva, LocalDateTime fechaActual) {
+		// primera manera
+		//select
+		//Lista
+		//recorrer lista
+		// por cada factura seteo la nueva fecha
+		//Actualizar cada factura
+		
+		//SQL: UPDATE factura set fact_fecha=:fechaNueva where fact_fecha>= fechaActual
+		//JPQL:UPDATE Factura f SET f.fecha=:fechaNueva WHERE f.fecha>= fechaActual
+	Query myQuery = this.entityManager.createQuery("UPDATE Factura f SET f.fecha=:fechaNueva WHERE f.fecha>=:fechaActual");
+	myQuery.setParameter("fechaNueva", fechaNueva);
+	myQuery.setParameter("fechaActual", fechaActual);
+	// devuelve una cantidad de lo que se actualizo
+	return myQuery.executeUpdate();
+	}
+
+	@Override
+	public int eliminarPorNumero(String numero) {
+		Query myQuery = 
+				this.entityManager.createQuery("DELETE FROM Factura f WHERE f.numero=:numero");
+		myQuery.setParameter("numero", numero);
+		return myQuery.executeUpdate();
+	}
+
+	@Override
+	public List<FacturaDTO> seleccionarFacturasDTO() {
+		TypedQuery<FacturaDTO> consulta = this.entityManager.createQuery("SELECT NEW com.uce.edu.ventas.repository.modelo.dto.FacturaDTO(f.numero,f.fecha) FROM Factura f",FacturaDTO.class);
+		return consulta.getResultList();
 	}
 
 }

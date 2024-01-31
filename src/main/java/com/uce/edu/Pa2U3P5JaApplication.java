@@ -13,6 +13,7 @@ import com.uce.edu.ventas.repository.modelo.DetalleFactura;
 import com.uce.edu.ventas.repository.modelo.Factura;
 import com.uce.edu.ventas.repository.modelo.Habitacion;
 import com.uce.edu.ventas.repository.modelo.Hotel;
+import com.uce.edu.ventas.repository.modelo.dto.FacturaDTO;
 import com.uce.edu.ventas.service.IFacturaService;
 import com.uce.edu.ventas.service.IHabitacionService;
 import com.uce.edu.ventas.service.IHotelService;
@@ -33,35 +34,21 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		System.out.println("INNER JOIN");
-		List<Factura> reporte1 = this.facturaService.buscarFacturaInnerJoin();
-		for (Factura f : reporte1) {
-			System.out.println(f.getNumero());
-//			for (DetalleFactura defa : f.getDetalles()) {
-//				System.out.println(defa.getNombreProducto());
-//			}
-
-		}
-
-		System.out.println("WHERE JOIN");
-		List<Factura> reporte = this.facturaService.buscarFacturaWhereJoin();
-		for (Factura f : reporte) {
-			System.out.println(f.getNumero());
-			for (DetalleFactura defa : f.getDetalles()) {
-				System.out.println(defa.getNombreProducto());
+		System.out.println("UPDATE");
+		int cantidad=this.facturaService.actualizarFechas(LocalDateTime.of(2020, 1, 15, 12, 50),LocalDateTime.of(2020, 1, 9, 12, 50) );
+		System.out.println("cantidad de registros actualizados: "+cantidad);
+		
+		System.out.println("DELETE");
+		int cantidad1 = this.facturaService.borrarPorNumero("0001-04343");
+		System.out.println("cantidad de registros borrados: "+cantidad1);
+		
+		
+		//this.facturaService.borrar(1);
+		List<FacturaDTO> reporte=this.facturaService.buscarFacturasDTO();
+			for (FacturaDTO facturaDTO : reporte) {
+				System.out.println(facturaDTO);
 			}
-
-		}
-		System.out.println("FETCH JOIN");
-		List<Factura> reporte2 = this.facturaService.buscarFacturaFetchJoin();
-		for (Factura f : reporte2) {
-			System.out.println(f.getNumero());
-			for (DetalleFactura defa : f.getDetalles()) {
-				System.out.println(defa.getNombreProducto());
-			}
-
-		}
-
+		
 	}
 
 }
