@@ -76,9 +76,9 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 		= this.entityManager.createQuery
 		("SELECT f FROM Factura f JOIN f.detalles d",Factura.class);
 		List<Factura> lista = myQuery.getResultList();
-//		for (Factura factura : lista) {
-//			factura.getDetalles().size();
-//		}
+		for (Factura factura : lista) {
+			factura.getDetalles().size();
+		}
 		
 		return lista;
 	}

@@ -34,19 +34,11 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		System.out.println("UPDATE");
-		int cantidad=this.facturaService.actualizarFechas(LocalDateTime.of(2020, 1, 15, 12, 50),LocalDateTime.of(2020, 1, 9, 12, 50) );
-		System.out.println("cantidad de registros actualizados: "+cantidad);
-		
-		System.out.println("DELETE");
-		int cantidad1 = this.facturaService.borrarPorNumero("0001-04343");
-		System.out.println("cantidad de registros borrados: "+cantidad1);
-		
-		
-		//this.facturaService.borrar(1);
-		List<FacturaDTO> reporte=this.facturaService.buscarFacturasDTO();
-			for (FacturaDTO facturaDTO : reporte) {
-				System.out.println(facturaDTO);
+		System.out.println("FULL JOIN");
+		List<Factura> reporte=this.facturaService.buscarFacturaFullJoin();
+			for (Factura factura : reporte) {
+				System.out.println(factura);
+				
 			}
 		
 	}
