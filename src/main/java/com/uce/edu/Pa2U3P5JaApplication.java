@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.uce.edu.ventas.repository.modelo.Cliente;
 import com.uce.edu.ventas.repository.modelo.DetalleFactura;
 import com.uce.edu.ventas.repository.modelo.Factura;
 import com.uce.edu.ventas.repository.modelo.Habitacion;
@@ -26,7 +28,7 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	private IHotelService hotelService;
 	@Autowired
 	private IHabitacionService habitacionService;
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P5JaApplication.class, args);
 	}
@@ -34,13 +36,17 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		System.out.println("FULL JOIN");
-		List<Factura> reporte=this.facturaService.buscarFacturaFullJoin();
-			for (Factura factura : reporte) {
-				System.out.println(factura);
-				
-			}
+		System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
+		Factura fac = new Factura();
+		fac.setCedula("222");
+		fac.setFecha(LocalDateTime.now());
+		fac.setNumero("001-002");
 		
+		
+		Cliente clie = new Cliente();
+		clie.setApellido("Botieso");
+		clie.setNombre("Mina");
+		this.facturaService.guardar(fac,clie);
 	}
 
 }
