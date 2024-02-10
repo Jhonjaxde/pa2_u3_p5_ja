@@ -20,6 +20,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 
 @Transactional
 @Repository
@@ -29,24 +30,28 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 	private EntityManager entityManager;
 
 	@Override
+	@Transactional(value =  TxType.NOT_SUPPORTED)
 	public Factura seleccionar(Integer id) {
 		// TODO Auto-generated method stub
 		return this.entityManager.find(Factura.class, id);
 	}
 
 	@Override
+	@Transactional(value =  TxType.MANDATORY)
 	public void insertar(Factura factura) {
 		// TODO Auto-generated method stub
 		this.entityManager.persist(factura);
 	}
 
 	@Override
+	@Transactional(value =  TxType.MANDATORY)
 	public void actualizar(Factura factura) {
 		// TODO Auto-generated method stub
 		this.entityManager.merge(factura);
 	}
 
 	@Override
+	@Transactional(value =  TxType.MANDATORY)
 	public void eliminar(Integer id) {
 		this.entityManager.remove(this.seleccionar(id));
 
@@ -198,5 +203,17 @@ public class FacturaRepositoryImpl implements IFacturaRepository {
 		TypedQuery<FacturaDTO> consulta = this.entityManager.createQuery("SELECT NEW com.uce.edu.ventas.repository.modelo.dto.FacturaDTO(f.numero,f.fecha) FROM Factura f",FacturaDTO.class);
 		return consulta.getResultList();
 	}
-
+	@Transactional(value = TxType.NOT_SUPPORTED)
+	@Override
+	public List<Factura> seleccionarTodos() {
+		TypedQuery<Factura> myQuery 
+		= this.entityManager.createQuery
+		("SELECT f FROM Factura f",Factura.class);
+		List<Factura> lista = myQuery.getResultList();
+//		for (Factura factura : lista) {
+//			factura.getDetalles().size();
+//		}
+//		
+		return lista;
+	}
 }

@@ -36,18 +36,7 @@ public class Pa2U3P5JaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Factura fac = new Factura();
-		fac.setCedula("222");
-		fac.setFecha(LocalDateTime.now());
-		fac.setNumero("001-002");
-		
-		
-		Cliente clie = new Cliente();
-		clie.setApellido(null);
-		clie.setNombre("Mina");
-		//this.facturaService.guardar(fac,clie);
-		System.out.println("Main: "+TransactionSynchronizationManager.isActualTransactionActive());
-		this.facturaService.prueba();
+		this.facturaService.pruebaNever();
 		
 		
 	}
