@@ -18,13 +18,13 @@ public class ClienteRepositoryImpl implements IClienteRepository{
 	@Transactional(value = TxType.REQUIRES_NEW)
 	public void insertar(Cliente cliente) {
 		// TODO Auto-generated method stub
-		System.out.println("Antes de ejeccutar en la base");
+		System.out.println("Antes de ejecutar en la base");
 		try {
 		this.entityManager.persist(cliente);
 		} catch (Exception e) {
 			System.out.println("ERROR");
 		}
-		System.out.println("despues de ejeccutar en la base");
+		System.out.println("despues de ejecutar en la base");
 	}
 
 }
